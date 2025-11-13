@@ -342,26 +342,6 @@ def makeCycloneTrackDataset(df_single_track, ds_CICE):
     dataset_interp
     return dataset_interp
 
-def load_closest_ww3_file(data_dir_ww3, target_time_ww3):
-    files_ww3 = sorted([f for f in os.listdir(data_dir_ww3) if f.endswith('.nc')])
-
-    file_dates_ww3 = []
-    for f in files_ww3:
-        try:
-            date_str_ww3 = f.split('_')[-1].split('.')[0]
-            file_dates_ww3.append(pd.Timestamp(date_str_ww3))
-        except Exception as e:
-            print(f"Skipping file {f} due to error: {e}")
-            continue
-
-    file_dates_ww3 = [d for d in file_dates_ww3 if isinstance(d, pd.Timestamp)]
-    closest_file_ww3 = files_ww3[min(range(len(file_dates_ww3)), key=lambda i: abs(file_dates_ww3[i] - target_time_ww3))]
-
-    file_path_ww3 = os.path.join(data_dir_ww3, closest_file_ww3)
-    ds_ww3 = xr.open_dataset(file_path_ww3)
-
-    print(f"Loading file: {closest_file_ww3}")
-    return ds_ww3
 
 def getEachBreakupIdx(breakup_idx):
     '''
